@@ -428,16 +428,12 @@
     <p>Que suenen las trompetas y ondeen los estandartes,<br>pues hoy este caballero ha ganado la más dulce de las batallas.<br>Vuestro corazón será mi reino, por siempre. ❤️</p>
 
     <div style="margin-top:28px;">
-      <p style="font-size:clamp(15px,3.5vw,18px); margin-bottom:14px; color:#f3d27a;">
-        📜 Sellad el pacto enviando la confirmación de noviazgo:
+      <p id="sentNote" style="font-size:clamp(15px,3.5vw,18px); color:#cdeacd; font-style:italic;">
+        💬 Abriendo WhatsApp... solo pulsa <strong>enviar</strong> ➤ para sellar el pacto.
       </p>
-      <div class="scroll-buttons" style="margin-top:0;">
-        <button class="btn" id="waBtn1">Confirmar por WhatsApp 💬</button>
-        <button class="btn btn-secondary" id="smsBtn1">Confirmar por SMS ✉️</button>
+      <div class="scroll-buttons" style="margin-top:14px;">
+        <button class="btn" id="waBtn1">Volver a abrir WhatsApp 💬</button>
       </div>
-      <p id="sentNote" style="display:none; margin-top:16px; color:#cdeacd; font-style:italic;">
-        💌 ¡Mensaje preparado! Solo pulsa <strong>enviar</strong> en cada chat que se abrió.
-      </p>
     </div>
   </div>
 
@@ -512,44 +508,26 @@
       }, i * 90);
     }
   }
+  // ---- Confirmación por WhatsApp al aceptar ----
+  // Número de México (+52). Formato internacional sin "+".
+  const numero = "525644408713";
+  const mensaje = "Acepto 💍❤️";
+  const waUrl = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje);
+
+  function abrirWhatsApp() {
+    window.open(waUrl, "_blank");
+  }
+
   yesBtn.addEventListener("click", () => {
     scrollStage.classList.add("hidden");
     finale.style.display = "block";
     rain();
+    // Abre WhatsApp directo con el "Acepto" listo para enviar
+    setTimeout(abrirWhatsApp, 900);
   });
 
-  // ---- Confirmación de noviazgo a los dos números ----
-  // Números de México (+52). Formato internacional sin "+".
-  const numeros = ["525644408713", "525630086874"];
-
-  const fecha = new Date().toLocaleDateString("es-MX", {
-    day: "numeric", month: "long", year: "numeric"
-  });
-  const mensaje =
-    "👑💍 ¡Es oficial! El día " + fecha +
-    " sellamos nuestro pacto: ahora somos pareja. " +
-    "Con amor, vuestro caballero Greco. ❤️🏰⚔️";
-
-  const sentNote = document.getElementById("sentNote");
-
-  // WhatsApp: abre un chat por cada número con el mensaje listo
-  document.getElementById("waBtn1").addEventListener("click", () => {
-    numeros.forEach((num, i) => {
-      const url = "https://wa.me/" + num + "?text=" + encodeURIComponent(mensaje);
-      setTimeout(() => window.open(url, "_blank"), i * 800);
-    });
-    sentNote.style.display = "block";
-  });
-
-  // SMS: abre la app de mensajes del teléfono con el texto listo
-  document.getElementById("smsBtn1").addEventListener("click", () => {
-    numeros.forEach((num, i) => {
-      // "+" delante para SMS internacional
-      const url = "sms:+" + num + "?body=" + encodeURIComponent(mensaje);
-      setTimeout(() => window.open(url, "_blank"), i * 800);
-    });
-    sentNote.style.display = "block";
-  });
+  // Por si el navegador bloqueó la ventana, botón para reintentar
+  document.getElementById("waBtn1").addEventListener("click", abrirWhatsApp);
 </script>
 </body>
 </html>
